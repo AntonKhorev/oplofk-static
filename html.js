@@ -19,7 +19,7 @@ html, body {
 </head>
 <body>
 <div id=map>при включённом js здесь будет карта</div>
-<script src=${prefix}-data.js></script>
+<script src=${prefix}.js></script>
 <script src=map.js></script>
 </body>
 </html>`

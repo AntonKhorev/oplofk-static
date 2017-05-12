@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "description": "Generates static html page with leaflet OpenStreetMap from osm/csv files with survey data",
   "main": "index.js",
+  "bin": {
+    "oplofk": "cli.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

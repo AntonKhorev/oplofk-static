@@ -54,13 +54,13 @@ const writeHtml=(prefix,htmlName,title)=>{
 }
 
 const writeData=(prefix)=>{
-	readSegments(`${prefix}-segments.osm`,(segments)=>{
-		readSurveys(`${prefix}-surveys.csv`,segments,(surveyedSegments)=>{
+	readSegments(`${prefix}.osm`,(segments)=>{
+		readSurveys(`${prefix}.csv`,segments,(surveyedSegments)=>{
 			surveyedSegmentsArray=[]
 			surveyedSegments.forEach((surveyedSegment)=>{
 				surveyedSegmentsArray.push(surveyedSegment)
 			})
-			fs.writeFile(`public_html/${prefix}-data.js`,'var data='+JSON.stringify(surveyedSegmentsArray))
+			fs.writeFile(`public_html/${prefix}.js`,'var data='+JSON.stringify(surveyedSegmentsArray))
 		})
 	})
 }
