@@ -1,4 +1,5 @@
 var div=document.getElementById('map')
+div.innerHTML=''
 var map=L.map(div).addLayer(L.tileLayer(
 	'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
 	{attribution: "© <a href='http://www.openstreetmap.org/copyright'>Участники OpenStreetMap</a>"}
