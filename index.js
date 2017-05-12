@@ -48,6 +48,7 @@ const readSurveys=(filename,segments,callback)=>{
 	})
 }
 
+// TODO update to 1.0.3
 const writeHtml=(prefix,htmlName,title)=>{
 	fs.writeFile(`public_html/${htmlName}`,[
 		`<!DOCTYPE html>`,
