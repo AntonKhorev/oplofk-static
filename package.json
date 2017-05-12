@@ -1,6 +1,5 @@
 {
   "name": "oplofk-static",
-  "version": "0.0.0",
   "description": "Generates static html page with leaflet OpenStreetMap from osm/csv files with survey data",
   "main": "index.js",
   "bin": {
@@ -13,7 +12,7 @@
     "osm",
     "leaflet"
   ],
-  "author": "",
+  "author": "Anton Khorev",
   "license": "ISC",
   "dependencies": {
     "mkdirp": "^0.5.1",
