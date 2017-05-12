@@ -1,0 +1,19 @@
+{
+  "name": "oplofk-static",
+  "version": "0.0.0",
+  "description": "Generates static html page with leaflet OpenStreetMap from osm/csv files with survey data",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "osm",
+    "leaflet"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mkdirp": "^0.5.1",
+    "node-osm-stream": "^0.2.2"
+  }
+}
