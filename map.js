@@ -1,3 +1,25 @@
+L.Control.ColorSlider=L.Control.extend({
+	options: {
+		position: 'bottomleft'
+	},
+	onAdd: function(){
+		var div=L.DomUtil.create('div','leaflet-control-layers')
+		var slider=L.DomUtil.create('input','',div)
+		slider.setAttribute('type','range')
+		slider.setAttribute('min',0)
+		slider.setAttribute('max',36)
+		slider.setAttribute('value',6)
+		L.DomEvent.on(slider,'change',function(ev){
+			console.log('changed!',slider.value)
+		})
+		L.DomEvent.disableClickPropagation(div)
+		return div
+	}
+})
+L.control.colorSlider=function(options){
+	return new L.Control.ColorSlider(options)
+}
+
 var div=document.getElementById('map')
 div.innerHTML=''
 var map=L.map(div).addLayer(L.tileLayer(
@@ -30,3 +52,4 @@ var segmentLayer=L.featureGroup(data.map(function(segment){
 	return L.polygon(segment.p,{color:polygonColor}).bindPopup(popupHtml)
 })).addTo(map)
 map.fitBounds(segmentLayer.getBounds())
+L.control.colorSlider().addTo(map)
