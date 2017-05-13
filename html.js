@@ -5,17 +5,7 @@ module.exports=(prefix,title)=>`<!DOCTYPE html>
 <title>${title}</title>
 <link rel=stylesheet href=https://unpkg.com/leaflet@1.0.3/dist/leaflet.css>
 <script src=https://unpkg.com/leaflet@1.0.3/dist/leaflet.js></script>
-<style>
-html, body {
-	height: 100%;
-	margin: 0;
-	padding: 0;
-}
-#map {
-	width: 100%;
-	height: 100%;
-}
-</style>
+<link rel=stylesheet href=map.css>
 </head>
 <body>
 <div id=map>при включённом js здесь будет карта</div>

@@ -72,7 +72,8 @@ const writeDistrict=(prefix,htmlName,title)=>{
 
 module.exports=(pages)=>{
 	mkdirp('public_html',()=>{
-		fs.createReadStream(`${__dirname}/map.js`).pipe(fs.createWriteStream('public_html/map.js'))
+		fs.createReadStream(`${__dirname}/map.js` ).pipe(fs.createWriteStream('public_html/map.js' ))
+		fs.createReadStream(`${__dirname}/map.css`).pipe(fs.createWriteStream('public_html/map.css'))
 		for (let page of pages) {
 			writeDistrict(...page)
 		}

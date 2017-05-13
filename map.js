@@ -42,7 +42,7 @@ L.Control.ColorSlider=L.Control.extend({
 		position: 'bottomleft'
 	},
 	onAdd: function(){
-		var div=L.DomUtil.create('div','leaflet-control-layers')
+		var div=L.DomUtil.create('div','leaflet-control-colorslider')
 		var slider=L.DomUtil.create('input','',div)
 		slider.type='range'
 		slider.min=1

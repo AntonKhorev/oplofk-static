@@ -1,0 +1,22 @@
+html, body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+#map {
+	width: 100%;
+	height: 100%;
+}
+.leaflet-control-colorslider {
+	box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+	background: #fff;
+	border-radius: 5px;
+	padding: 5px;
+	width: 200px;
+}
+.leaflet-control-colorslider input {
+	display: block;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
