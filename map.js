@@ -43,12 +43,30 @@ L.Control.ColorSlider=L.Control.extend({
 	},
 	onAdd: function(){
 		var div=L.DomUtil.create('div','leaflet-control-colorslider')
-		var slider=L.DomUtil.create('input','',div)
+		var label=L.DomUtil.create('label','',div)
+		label.innerHTML='время с последней проверки, мес. '
+		var slider=L.DomUtil.create('input','',label)
 		slider.type='range'
 		slider.min=1
 		slider.max=maxColorThreshold-1
 		slider.value=defaultColorThreshold
+		var scale=L.DomUtil.create('div','leaflet-control-colorslider-scale',div)
+		var minValue=L.DomUtil.create('span','leaflet-control-colorslider-min',scale)
+		minValue.innerHTML=0
+		var maxValue=L.DomUtil.create('span','leaflet-control-colorslider-max',scale)
+		maxValue.innerHTML=maxColorThreshold
+		var currentValue=L.DomUtil.create('span','leaflet-control-colorslider-current',scale)
+		function updateCurrentValue(){
+			if (slider.value>3 && slider.value<maxColorThreshold-3) {
+				currentValue.innerHTML=slider.value
+			} else {
+				currentValue.innerHTML=''
+			}
+			currentValue.setAttribute('style','left:'+(slider.value*6)+'px')
+		}
+		updateCurrentValue()
 		L.DomEvent.on(slider,'change',function(ev){
+			updateCurrentValue()
 			segmentLayer.eachLayer(function(segmentPolygon){
 				segmentPolygon.setStyle({color:computePolygonColor(segmentPolygon.age,slider.value)})
 			})

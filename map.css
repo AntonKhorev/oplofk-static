@@ -12,11 +12,27 @@ html, body {
 	background: #fff;
 	border-radius: 5px;
 	padding: 5px;
-	width: 200px;
+	width: 216px;
 }
 .leaflet-control-colorslider input {
 	display: block;
 	width: 100%;
 	margin: 0;
 	padding: 0;
+}
+.leaflet-control-colorslider-scale {
+	position: relative;
+	height: 1em;
+}
+.leaflet-control-colorslider-min {
+	position: absolute;
+	left: 0;
+}
+.leaflet-control-colorslider-current {
+	position: absolute;
+	transform: translate(-50%,0);
+}
+.leaflet-control-colorslider-max {
+	position: absolute;
+	right: 0;
 }
