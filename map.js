@@ -42,6 +42,7 @@ L.Control.ColorSlider=L.Control.extend({
 		position: 'bottomleft'
 	},
 	onAdd: function(){
+		var style=L.DomUtil.create('style','',document.head)
 		var div=L.DomUtil.create('div','leaflet-control-colorslider')
 		var label=L.DomUtil.create('label','',div)
 		label.innerHTML='время с последней проверки, мес. '
@@ -57,12 +58,20 @@ L.Control.ColorSlider=L.Control.extend({
 		maxValue.innerHTML=maxColorThreshold
 		var currentValue=L.DomUtil.create('span','leaflet-control-colorslider-current',scale)
 		function updateCurrentValue(){
+			var pos=slider.value*6
+			var backgroundCssLine="background: linear-gradient(to right,#F00 0px,#00F "+pos+"px,#000 360px);"
+			style.innerHTML=
+				".leaflet-control-colorslider input::-moz-range-track {"+
+				backgroundCssLine+
+				"} .leaflet-control-colorslider input::-webkit-slider-runnable-track {"+
+				backgroundCssLine+
+				"}"
 			if (slider.value>3 && slider.value<maxColorThreshold-3) {
 				currentValue.innerHTML=slider.value
 			} else {
 				currentValue.innerHTML=''
 			}
-			currentValue.setAttribute('style','left:'+(slider.value*6)+'px')
+			currentValue.setAttribute('style','left:'+pos+'px')
 		}
 		updateCurrentValue()
 		L.DomEvent.on(slider,'change',function(ev){

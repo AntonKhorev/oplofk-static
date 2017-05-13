@@ -28,11 +28,11 @@ html, body {
 	position: absolute;
 	left: 0;
 }
-.leaflet-control-colorslider-current {
-	position: absolute;
-	transform: translate(-50%,0);
-}
 .leaflet-control-colorslider-max {
 	position: absolute;
 	right: 0;
+}
+.leaflet-control-colorslider-current {
+	position: absolute;
+	transform: translate(-50%,0);
 }
