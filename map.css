@@ -20,6 +20,7 @@ html, body {
 	margin: 0;
 	padding: 0;
 }
+/* .leaflet-control-age-slider::-moz-range-track and .leaflet-control-age-slider::-webkit-slider-runnable-track are dynamically adjusted by js */
 .leaflet-control-age-slider::-moz-range-track {
 	height: 12px;
 }
@@ -30,7 +31,10 @@ html, body {
 	border-radius: 0;
 	background: #CCC;
 }
-/* .leaflet-control-age-slider::-moz-range-track and .leaflet-control-age-slider::-webkit-slider-runnable-track are dynamically adjusted by js */
+.leaflet-control-age-slider::-moz-range-thumb:hover,
+.leaflet-control-age-slider:focus::-moz-range-thumb {
+	background: #FFF;
+}
 .leaflet-control-age-slider::-ms-fill-lower {
 	background: linear-gradient(to right,#F00,#00F);
 }
@@ -40,6 +44,10 @@ html, body {
 .leaflet-control-age-slider::-ms-thumb {
 	border: solid 1px #444;
 	background: #CCC;
+}
+.leaflet-control-age-slider::-ms-thumb:hover,
+.leaflet-control-age-slider:focus::-ms-thumb {
+	background: #FFF;
 }
 .leaflet-control-age-scale {
 	position: relative;
