@@ -74,12 +74,14 @@ L.Control.Age=L.Control.extend({
 			currentValue.setAttribute('style','left:'+pos+'px')
 		}
 		updateCurrentValue()
-		L.DomEvent.on(slider,'change',function(ev){
-			updateCurrentValue()
-			segmentLayer.eachLayer(function(segmentPolygon){
-				segmentPolygon.setStyle({color:computePolygonColor(segmentPolygon.age,slider.value)})
-			})
-		})
+		L.DomEvent.on(slider,'input change',L.Util.throttle(
+			function(ev){
+				updateCurrentValue()
+				segmentLayer.eachLayer(function(segmentPolygon){
+					segmentPolygon.setStyle({color:computePolygonColor(segmentPolygon.age,slider.value)})
+				})
+			},100)
+		)
 		L.DomEvent.disableClickPropagation(div)
 		return div
 	}
