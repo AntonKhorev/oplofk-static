@@ -37,34 +37,38 @@ var segmentLayer=L.featureGroup(data.map(function(segment){
 })).addTo(map)
 map.fitBounds(segmentLayer.getBounds())
 
-L.Control.ColorSlider=L.Control.extend({
+L.Control.Age=L.Control.extend({
 	options: {
 		position: 'bottomleft'
 	},
 	onAdd: function(){
 		var style=L.DomUtil.create('style','',document.head)
-		var div=L.DomUtil.create('div','leaflet-control-colorslider')
+		var div=L.DomUtil.create('div','leaflet-control-age')
 		var label=L.DomUtil.create('label','',div)
 		label.innerHTML='время с последней проверки, мес. '
-		var slider=L.DomUtil.create('input','',label)
+		var slider=L.DomUtil.create('input','leaflet-control-age-slider',label)
 		slider.type='range'
 		slider.min=1
 		slider.max=maxColorThreshold-1
 		slider.value=defaultColorThreshold
-		var scale=L.DomUtil.create('div','leaflet-control-colorslider-scale',div)
-		var minValue=L.DomUtil.create('span','leaflet-control-colorslider-min',scale)
+		var scale=L.DomUtil.create('div','leaflet-control-age-scale',div)
+		var minValue=L.DomUtil.create('span','leaflet-control-age-min',scale)
 		minValue.innerHTML=0
-		var maxValue=L.DomUtil.create('span','leaflet-control-colorslider-max',scale)
+		var maxValue=L.DomUtil.create('span','leaflet-control-age-max',scale)
 		maxValue.innerHTML=maxColorThreshold
-		var currentValue=L.DomUtil.create('span','leaflet-control-colorslider-current',scale)
+		var currentValue=L.DomUtil.create('span','leaflet-control-age-current',scale)
 		function updateCurrentValue(){
 			var pos=slider.value*6
 			var backgroundCssLine="background: linear-gradient(to right,#F00 0px,#00F "+pos+"px,#000 360px);"
 			style.innerHTML=
-				".leaflet-control-colorslider input::-moz-range-track {"+
+				".leaflet-control-age-slider::-moz-range-track {"+
 				backgroundCssLine+
-				"} .leaflet-control-colorslider input::-webkit-slider-runnable-track {"+
+				"} .leaflet-control-age-slider::-webkit-slider-runnable-track {"+
 				backgroundCssLine+
+				"} .leaflet-control-age-slider::-ms-fill-lower {"+
+				"background: linear-gradient(to right,#F00,#00F);"+
+				"} .leaflet-control-age-slider::-ms-fill-upper {"+
+				"background: linear-gradient(to right,#00F,#000);"+
 				"}"
 			if (slider.value>3 && slider.value<maxColorThreshold-3) {
 				currentValue.innerHTML=slider.value
@@ -84,7 +88,7 @@ L.Control.ColorSlider=L.Control.extend({
 		return div
 	}
 })
-L.control.colorSlider=function(options){
-	return new L.Control.ColorSlider(options)
+L.control.age=function(options){
+	return new L.Control.Age(options)
 }
-L.control.colorSlider().addTo(map)
+L.control.age().addTo(map)
