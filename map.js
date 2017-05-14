@@ -65,10 +65,6 @@ L.Control.Age=L.Control.extend({
 				backgroundCssLine+
 				"} .leaflet-control-age-slider::-webkit-slider-runnable-track {"+
 				backgroundCssLine+
-				"} .leaflet-control-age-slider::-ms-fill-lower {"+
-				"background: linear-gradient(to right,#F00,#00F);"+
-				"} .leaflet-control-age-slider::-ms-fill-upper {"+
-				"background: linear-gradient(to right,#00F,#000);"+
 				"}"
 			if (slider.value>3 && slider.value<maxColorThreshold-3) {
 				currentValue.innerHTML=slider.value
