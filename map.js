@@ -58,20 +58,20 @@ L.Control.Age=L.Control.extend({
 		maxValue.innerHTML=maxColorThreshold
 		var currentValue=L.DomUtil.create('span','leaflet-control-age-current',scale)
 		function updateCurrentValue(){
-			var pos=slider.value*6
-			var backgroundCssLine="background: linear-gradient(to right,#F00 0px,#00F "+pos+"px,#000 360px);"
+			var pos=(100*slider.value/maxColorThreshold)+'%'
+			var backgroundCssLine="background: linear-gradient(to right,#F00 0%,#00F "+pos+",#000 100%);"
 			style.innerHTML=
 				".leaflet-control-age-slider::-moz-range-track {"+
 				backgroundCssLine+
 				"} .leaflet-control-age-slider::-webkit-slider-runnable-track {"+
 				backgroundCssLine+
 				"}"
-			if (slider.value>3 && slider.value<maxColorThreshold-3) {
+			if (slider.value>.1*maxColorThreshold && slider.value<.9*maxColorThreshold) {
 				currentValue.innerHTML=slider.value
 			} else {
 				currentValue.innerHTML=''
 			}
-			currentValue.setAttribute('style','left:'+pos+'px')
+			currentValue.setAttribute('style','left:'+pos)
 		}
 		updateCurrentValue()
 		L.DomEvent.on(slider,'input change',L.Util.throttle(
