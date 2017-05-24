@@ -31,7 +31,7 @@ const readSurveys=(filename,segments,callback)=>{
 	readline.createInterface({
 		input: fs.createReadStream(filename)
 	}).on('line',(line)=>{
-		const [segmentName,surveyDate,surveyChangeset]=line.split(';')
+		const [segmentName,surveyDate,surveyChangesets]=line.split(';')
 		if (surveyedSegments.has(segmentName)) {
 			surveyedSegments.delete(segmentName) // force reorder
 		}
@@ -41,7 +41,9 @@ const readSurveys=(filename,segments,callback)=>{
 			d: segment.description,
 			p: segment.nodes.map(node=>node.map(n=>+n.toFixed(5))),
 			t: surveyDate,
-			c: surveyChangeset,
+		}
+		if (surveyChangesets.length>0) {
+			surveyedSegment.c=surveyChangesets
 		}
 		surveyedSegments.set(segmentName,surveyedSegment)
 	}).on('close',()=>{
