@@ -42,16 +42,9 @@ const readSurveys=(filename,segments,callback)=>{
 				points.push(Math.round(n*100000))
 			}
 		}
-		const surveyedSegment={
-			n: segment.name,
-			d: segment.description,
-			p: points,
-			t: surveyDate,
-		}
-		if (surveyChangesets.length>0) {
-			surveyedSegment.c=surveyChangesets
-		}
-		surveyedSegments.set(segmentName,surveyedSegment)
+		surveyedSegments.set(segmentName,[
+			segment.name,segment.description,points,surveyDate,surveyChangesets
+		])
 	}).on('close',()=>{
 		callback(surveyedSegments)
 	})
@@ -64,28 +57,11 @@ const writeHtml=(prefix,htmlName,title)=>{
 const writeData=(prefix)=>{
 	readSegments(`${prefix}.osm`,(segments)=>{
 		readSurveys(`${prefix}.csv`,segments,(surveyedSegments)=>{
-			let firstSegment=true
-			let data='var data=['
+			const surveyedSegmentsArray=[]
 			surveyedSegments.forEach((surveyedSegment)=>{
-				if (firstSegment) {
-					firstSegment=false
-				} else {
-					data+=','
-				}
-				let firstKey=true
-				data+='{'
-				for (let k in surveyedSegment) {
-					if (firstKey) {
-						firstKey=false
-					} else {
-						data+=','
-					}
-					data+=k+':'+JSON.stringify(surveyedSegment[k])
-				}
-				data+='}'
+				surveyedSegmentsArray.push(surveyedSegment)
 			})
-			data+=']'
-			fs.writeFile(`public_html/${prefix}.js`,data)
+			fs.writeFile(`public_html/${prefix}.js`,'var data='+JSON.stringify(surveyedSegmentsArray))
 		})
 	})
 }

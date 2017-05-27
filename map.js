@@ -24,19 +24,20 @@ var map=L.map(div).addLayer(L.tileLayer(
 ))
 var now=Date.now()
 var segmentLayer=L.featureGroup(data.map(function(segment){
+	var NAME=0, DESC=1, PTS=2, DATE=3, CSETS=4
 	var popupHtml=
-		"<strong>"+segment.n+"</strong><br>"+segment.d+"<br><br>"+
-		"проверено <time>"+segment.t+"</time>"
-	if (segment.c!==undefined) {
-		var changesets=segment.c.split(',')
+		"<strong>"+segment[NAME]+"</strong><br>"+segment[DESC]+"<br><br>"+
+		"проверено <time>"+segment[DATE]+"</time>"
+	if (segment[CSETS].length>0) {
+		var changesets=segment[CSETS].split(',')
 		popupHtml+=", записано в пакет"+(changesets.length==1?"е ":"ах ")+changesets.map(function(c){
 			return "<a href=https://www.openstreetmap.org/changeset/"+c+">"+c+"</a>"
 		}).join(", ")
 	}
-	var age=now-Date.parse(segment.t)
+	var age=now-Date.parse(segment[DATE])
 	var points=[]
-	for (var i=0;i<segment.p.length;i+=2) {
-		points.push([segment.p[i]/100000,segment.p[i+1]/100000])
+	for (var i=0;i<segment[PTS].length;i+=2) {
+		points.push([segment[PTS][i]/100000,segment[PTS][i+1]/100000])
 	}
 	var segmentPolygon=L.polygon(points,{color:computePolygonColor(age,defaultColorThreshold)}).bindPopup(popupHtml)
 	segmentPolygon.age=age
