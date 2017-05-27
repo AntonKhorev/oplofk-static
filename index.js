@@ -36,10 +36,16 @@ const readSurveys=(filename,segments,callback)=>{
 			surveyedSegments.delete(segmentName) // force reorder
 		}
 		const segment=segments[segmentName]
+		const points=[]
+		for (let node of segment.nodes) {
+			for (let n of node) {
+				points.push(Math.round(n*100000))
+			}
+		}
 		const surveyedSegment={
 			n: segment.name,
 			d: segment.description,
-			p: segment.nodes.map(node=>node.map(n=>+n.toFixed(5))),
+			p: points,
 			t: surveyDate,
 		}
 		if (surveyChangesets.length>0) {

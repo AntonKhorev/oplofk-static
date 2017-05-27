@@ -34,7 +34,11 @@ var segmentLayer=L.featureGroup(data.map(function(segment){
 		}).join(", ")
 	}
 	var age=now-Date.parse(segment.t)
-	var segmentPolygon=L.polygon(segment.p,{color:computePolygonColor(age,defaultColorThreshold)}).bindPopup(popupHtml)
+	var points=[]
+	for (var i=0;i<segment.p.length;i+=2) {
+		points.push([segment.p[i]/100000,segment.p[i+1]/100000])
+	}
+	var segmentPolygon=L.polygon(points,{color:computePolygonColor(age,defaultColorThreshold)}).bindPopup(popupHtml)
 	segmentPolygon.age=age
 	return segmentPolygon
 })).addTo(map)
