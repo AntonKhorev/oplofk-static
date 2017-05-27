@@ -64,11 +64,28 @@ const writeHtml=(prefix,htmlName,title)=>{
 const writeData=(prefix)=>{
 	readSegments(`${prefix}.osm`,(segments)=>{
 		readSurveys(`${prefix}.csv`,segments,(surveyedSegments)=>{
-			surveyedSegmentsArray=[]
+			let firstSegment=true
+			let data='var data=['
 			surveyedSegments.forEach((surveyedSegment)=>{
-				surveyedSegmentsArray.push(surveyedSegment)
+				if (firstSegment) {
+					firstSegment=false
+				} else {
+					data+=','
+				}
+				let firstKey=true
+				data+='{'
+				for (let k in surveyedSegment) {
+					if (firstKey) {
+						firstKey=false
+					} else {
+						data+=','
+					}
+					data+=k+':'+JSON.stringify(surveyedSegment[k])
+				}
+				data+='}'
 			})
-			fs.writeFile(`public_html/${prefix}.js`,'var data='+JSON.stringify(surveyedSegmentsArray))
+			data+=']'
+			fs.writeFile(`public_html/${prefix}.js`,data)
 		})
 	})
 }
