@@ -40,14 +40,13 @@ const readSurveys=(filename,segments,callback)=>{
 			surveyedSegments.delete(segmentName) // force reorder
 		}
 		const segment=segments[segmentName]
-		const points=[]
+		const lats=[], lons=[]
 		for (let node of segment.nodes) {
-			for (let n of node) {
-				points.push(Math.round(n*100000))
-			}
+			lats.push(Math.round(node[0]*100000))
+			lons.push(Math.round(node[1]*100000))
 		}
 		surveyedSegments.set(segmentName,[
-			segment.name,segment.description,points,surveyDate,surveyChangesets
+			lats,lons,segment.name,segment.description,surveyDate,surveyChangesets
 		])
 	}).on('close',()=>{
 		callback(surveyedSegments)
@@ -61,9 +60,22 @@ const writeHtml=(prefix,htmlName,title)=>{
 const writeData=(prefix)=>{
 	readSegments(`${prefix}.osm`,(segments)=>{
 		readSurveys(`${prefix}.csv`,segments,(surveyedSegments)=>{
+			const makeDeltaCompressor=()=>{
+				let a=0
+				return x=>{
+					const d=x-a
+					a=x
+					return d
+				}
+			}
+			const latCompressor=makeDeltaCompressor()
+			const lonCompressor=makeDeltaCompressor()
 			const surveyedSegmentsArray=[]
 			surveyedSegments.forEach((surveyedSegment)=>{
-				surveyedSegmentsArray.push(surveyedSegment)
+				const copySegment=[...surveyedSegment]
+				copySegment[0]=copySegment[0].map(latCompressor)
+				copySegment[1]=copySegment[1].map(lonCompressor)
+				surveyedSegmentsArray.push(copySegment)
 			})
 			fs.writeFile(`public_html/${prefix}.js`,'var data='+JSON.stringify(surveyedSegmentsArray))
 		})

@@ -23,8 +23,9 @@ var map=L.map(div).addLayer(L.tileLayer(
 	{attribution: "© <a href=https://www.openstreetmap.org/copyright>Участники OpenStreetMap</a>"}
 ))
 var now=Date.now()
+var latAcc=0, lonAcc=0
 var segmentLayer=L.featureGroup(data.map(function(segment){
-	var NAME=0, DESC=1, PTS=2, DATE=3, CSETS=4
+	var LATS=0, LONS=1, NAME=2, DESC=3, DATE=4, CSETS=5
 	var popupHtml=
 		"<strong>"+segment[NAME]+"</strong><br>"+segment[DESC]+"<br><br>"+
 		"проверено <time>"+segment[DATE]+"</time>"
@@ -35,8 +36,11 @@ var segmentLayer=L.featureGroup(data.map(function(segment){
 	}
 	var age=now-Date.parse(segment[DATE])
 	var points=[]
-	for (var i=0;i<segment[PTS].length;i+=2) {
-		points.push([segment[PTS][i]/100000,segment[PTS][i+1]/100000])
+	for (var i=0;i<segment[LATS].length;i++) {
+		points.push([
+			(latAcc+=segment[LATS][i])/100000,
+			(lonAcc+=segment[LONS][i])/100000
+		])
 	}
 	var segmentPolygon=L.polygon(points,{color:computePolygonColor(age,defaultColorThreshold)}).bindPopup(popupHtml)
 	segmentPolygon.age=age
