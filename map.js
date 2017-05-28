@@ -29,8 +29,7 @@ var segmentLayer=L.featureGroup(data.map(function(segment){
 		"<strong>"+segment[NAME]+"</strong><br>"+segment[DESC]+"<br><br>"+
 		"проверено <time>"+segment[DATE]+"</time>"
 	if (segment[CSETS].length>0) {
-		var changesets=segment[CSETS].split(',')
-		popupHtml+=", записано в пакет"+(changesets.length==1?"е ":"ах ")+changesets.map(function(c){
+		popupHtml+=", записано в пакет"+(segment[CSETS].length==1?"е ":"ах ")+segment[CSETS].map(function(c){
 			return "<a href=https://www.openstreetmap.org/changeset/"+c+">"+c+"</a>"
 		}).join(", ")
 	}

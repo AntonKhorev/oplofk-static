@@ -31,7 +31,11 @@ const readSurveys=(filename,segments,callback)=>{
 	readline.createInterface({
 		input: fs.createReadStream(filename)
 	}).on('line',(line)=>{
-		const [segmentName,surveyDate,surveyChangesets]=line.split(';')
+		const [segmentName,surveyDate,surveyChangesetsString]=line.split(';')
+		let surveyChangesets=[]
+		if (surveyChangesetsString.length>0) {
+			surveyChangesets=surveyChangesetsString.split(',').map(Number)
+		}
 		if (surveyedSegments.has(segmentName)) {
 			surveyedSegments.delete(segmentName) // force reorder
 		}
