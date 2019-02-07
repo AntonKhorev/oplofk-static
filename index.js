@@ -39,6 +39,9 @@ const readSurveys=(filename,segments,callback)=>{
 		if (surveyedSegments.has(segmentName)) {
 			surveyedSegments.delete(segmentName) // force reorder
 		}
+		if (!(segmentName in segments)) {
+			throw `segment "${segmentName}" used in survey data file "${filename}" not found in segment data`
+		}
 		const segment=segments[segmentName]
 		const lats=[], lons=[]
 		for (let node of segment.nodes) {
