@@ -15,7 +15,6 @@
   "author": "Anton Khorev",
   "license": "ISC",
   "dependencies": {
-    "mkdirp": "^0.5.1",
     "node-osm-stream": "^0.2.2"
   },
   "version": "0.0.4"

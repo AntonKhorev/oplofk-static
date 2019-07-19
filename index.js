@@ -1,6 +1,5 @@
 const fs=require('fs')
 const readline=require('readline')
-const mkdirp=require('mkdirp')
 const OSMStream=require('node-osm-stream')
 const html=require('./html')
 
@@ -57,7 +56,7 @@ const readSurveys=(filename,segments,callback)=>{
 }
 
 const writeHtml=(prefix,htmlName,title)=>{
-	fs.writeFile(`public_html/${htmlName}`,html(prefix,title))
+	fs.writeFile(`public_html/${htmlName}`,html(prefix,title),()=>{})
 }
 
 const writeData=(prefix)=>{
@@ -80,7 +79,7 @@ const writeData=(prefix)=>{
 				copySegment[1]=copySegment[1].map(lonCompressor)
 				surveyedSegmentsArray.push(copySegment)
 			})
-			fs.writeFile(`public_html/${prefix}.js`,'var data='+JSON.stringify(surveyedSegmentsArray))
+			fs.writeFile(`public_html/${prefix}.js`,'var data='+JSON.stringify(surveyedSegmentsArray),()=>{})
 		})
 	})
 }
@@ -91,7 +90,7 @@ const writeDistrict=(prefix,htmlName,title)=>{
 }
 
 module.exports=(pages)=>{
-	mkdirp('public_html',()=>{
+	fs.mkdir('public_html',{recursive:true},()=>{
 		fs.createReadStream(`${__dirname}/map.js` ).pipe(fs.createWriteStream('public_html/map.js' ))
 		fs.createReadStream(`${__dirname}/map.css`).pipe(fs.createWriteStream('public_html/map.css'))
 		for (let page of pages) {
