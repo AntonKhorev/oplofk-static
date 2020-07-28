@@ -26,30 +26,31 @@ const readSegments=(filename,callback)=>{
 }
 
 const readSurveys=(filename,segments,callback)=>{
-	const surveyedSegments=new Map()
+	const surveyedSegments={}
 	readline.createInterface({
 		input: fs.createReadStream(filename)
 	}).on('line',(line)=>{
-		const [segmentName,surveyDate,surveyChangesetsString]=line.split(';')
+		const [segmentName,surveyDate,surveyChangesetsString,goldId]=line.split(';')
 		let surveyChangesets=[]
 		if (surveyChangesetsString.length>0) {
 			surveyChangesets=surveyChangesetsString.split(',').map(Number)
 		}
-		if (surveyedSegments.has(segmentName)) {
-			surveyedSegments.delete(segmentName) // force reorder
-		}
 		if (!(segmentName in segments)) {
 			throw `segment "${segmentName}" used in survey data file "${filename}" not found in segment data`
 		}
-		const segment=segments[segmentName]
-		const lats=[], lons=[]
-		for (let node of segment.nodes) {
-			lats.push(Math.round(node[0]*100000))
-			lons.push(Math.round(node[1]*100000))
+		if (!(segmentName in surveyedSegments)) {
+			const segment=segments[segmentName]
+			const lats=[], lons=[]
+			for (let node of segment.nodes) {
+				lats.push(Math.round(node[0]*100000))
+				lons.push(Math.round(node[1]*100000))
+			}
+			surveyedSegments[segmentName]=[
+				lats,lons,segment.name,segment.description,[]
+			]
 		}
-		surveyedSegments.set(segmentName,[
-			lats,lons,segment.name,segment.description,surveyDate,surveyChangesets
-		])
+		const [,,,,surveys]=surveyedSegments[segmentName]
+		surveys.push([surveyDate,surveyChangesets])
 	}).on('close',()=>{
 		callback(surveyedSegments)
 	})
@@ -73,12 +74,12 @@ const writeData=(prefix)=>{
 			const latCompressor=makeDeltaCompressor()
 			const lonCompressor=makeDeltaCompressor()
 			const surveyedSegmentsArray=[]
-			surveyedSegments.forEach((surveyedSegment)=>{
+			for (const surveyedSegment of Object.values(surveyedSegments)) {
 				const copySegment=[...surveyedSegment]
 				copySegment[0]=copySegment[0].map(latCompressor)
 				copySegment[1]=copySegment[1].map(lonCompressor)
 				surveyedSegmentsArray.push(copySegment)
-			})
+			}
 			fs.writeFile(`public_html/${prefix}.js`,'var data='+JSON.stringify(surveyedSegmentsArray),()=>{})
 		})
 	})

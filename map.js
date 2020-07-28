@@ -25,16 +25,17 @@ var map=L.map(div).addLayer(L.tileLayer(
 var now=Date.now()
 var latAcc=0, lonAcc=0
 var segmentLayer=L.featureGroup(data.map(function(segment){
-	var LATS=0, LONS=1, NAME=2, DESC=3, DATE=4, CSETS=5
-	var popupHtml=
-		"<strong>"+segment[NAME]+"</strong><br>"+segment[DESC]+"<br><br>"+
-		"проверено <time>"+segment[DATE]+"</time>"
-	if (segment[CSETS].length>0) {
-		popupHtml+=", записано в пакет"+(segment[CSETS].length==1?"е ":"ах ")+segment[CSETS].map(function(c){
+	var LATS=0, LONS=1, NAME=2, DESC=3, SURVEYS=4
+	var DATE=0, CSETS=1
+	var popupHtml="<strong>"+segment[NAME]+"</strong><br>"+segment[DESC]+"<br><br><table><tr><th>дата<th>пакеты"
+	for (var i=0;i<segment[SURVEYS].length;i++) {
+		popupHtml+="<tr><td><time>"+segment[SURVEYS][i][DATE]+"</time><td>"+segment[SURVEYS][i][CSETS].map(function(c){
 			return "<a href=https://www.openstreetmap.org/changeset/"+c+">"+c+"</a>"
 		}).join(", ")
+
 	}
-	var age=now-Date.parse(segment[DATE])
+	popupHtml+="</table>"
+	var age=now-Date.parse(segment[SURVEYS][segment[SURVEYS].length-1][DATE])
 	var points=[]
 	for (var i=0;i<segment[LATS].length;i++) {
 		points.push([
