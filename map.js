@@ -22,13 +22,17 @@ function getChangesetsCell(changesetIds) {
 		return "<a href=https://www.openstreetmap.org/changeset/"+c+">"+c+"</a>"
 	}).join(", ")
 }
-function getGoldCell(goldId) {
+function getGoldCell(segmentName,checkDate,goldId) {
 	if (goldId===undefined) {
 		return "нет"
 	} else if (goldId==0) {
 		return "пусто"
 	} else {
-		return "<a href=gold/"+goldId+".osm>файл</a>"
+		return "<a href=gold/"+goldId+".osm>файл</a> <a href='http://127.0.0.1:8111/import?new_layer=true&layer_name="+encodeURIComponent(
+			segmentName+" - "+checkDate
+		)+"&url="+encodeURIComponent(
+			window.location.href.replace(/\/[^/]*$/,"/gold/"+goldId+".osm")
+		)+"'>RC</a>"
 	}
 }
 
@@ -45,7 +49,7 @@ var segmentLayer=L.featureGroup(data.map(function(segment){
 	var DATE=0, CSETS=1, GOLD=2
 	var popupHtml="<strong>"+segment[NAME]+"</strong><br>"+segment[DESC]+"<br><br><table><tr><th>дата<th>пакеты<th>данные"
 	for (var i=0;i<segment[SURVEYS].length;i++) {
-		popupHtml+="<tr><td><time>"+segment[SURVEYS][i][DATE]+"</time><td>"+getChangesetsCell(segment[SURVEYS][i][CSETS])+"<td>"+getGoldCell(segment[SURVEYS][i][GOLD])
+		popupHtml+="<tr><td><time>"+segment[SURVEYS][i][DATE]+"</time><td>"+getChangesetsCell(segment[SURVEYS][i][CSETS])+"<td>"+getGoldCell(segment[NAME],segment[SURVEYS][i][DATE],segment[SURVEYS][i][GOLD])
 	}
 	popupHtml+="</table>"
 	var age=now-Date.parse(segment[SURVEYS][segment[SURVEYS].length-1][DATE])
