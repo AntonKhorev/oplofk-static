@@ -16,6 +16,22 @@ function computePolygonColor(age,threshold) {
 	}
 }
 
+function getChangesetsCell(changesetIds) {
+	if (changesetIds.length==0) return "нет"
+	return changesetIds.map(function(c){
+		return "<a href=https://www.openstreetmap.org/changeset/"+c+">"+c+"</a>"
+	}).join(", ")
+}
+function getGoldCell(goldId) {
+	if (goldId===undefined) {
+		return "нет"
+	} else if (goldId==0) {
+		return "пусто"
+	} else {
+		return "<a href=gold/"+goldId+".osm>файл</a>"
+	}
+}
+
 var div=document.getElementById('map')
 div.innerHTML=''
 var map=L.map(div).addLayer(L.tileLayer(
@@ -26,13 +42,10 @@ var now=Date.now()
 var latAcc=0, lonAcc=0
 var segmentLayer=L.featureGroup(data.map(function(segment){
 	var LATS=0, LONS=1, NAME=2, DESC=3, SURVEYS=4
-	var DATE=0, CSETS=1
-	var popupHtml="<strong>"+segment[NAME]+"</strong><br>"+segment[DESC]+"<br><br><table><tr><th>дата<th>пакеты"
+	var DATE=0, CSETS=1, GOLD=2
+	var popupHtml="<strong>"+segment[NAME]+"</strong><br>"+segment[DESC]+"<br><br><table><tr><th>дата<th>пакеты<th>данные"
 	for (var i=0;i<segment[SURVEYS].length;i++) {
-		popupHtml+="<tr><td><time>"+segment[SURVEYS][i][DATE]+"</time><td>"+segment[SURVEYS][i][CSETS].map(function(c){
-			return "<a href=https://www.openstreetmap.org/changeset/"+c+">"+c+"</a>"
-		}).join(", ")
-
+		popupHtml+="<tr><td><time>"+segment[SURVEYS][i][DATE]+"</time><td>"+getChangesetsCell(segment[SURVEYS][i][CSETS])+"<td>"+getGoldCell(segment[SURVEYS][i][GOLD])
 	}
 	popupHtml+="</table>"
 	var age=now-Date.parse(segment[SURVEYS][segment[SURVEYS].length-1][DATE])

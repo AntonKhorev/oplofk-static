@@ -25,12 +25,12 @@ const readSegments=(filename,callback)=>{
 	})
 }
 
-const readSurveys=(filename,segments,callback)=>{
+const readSurveys=(filename,segments,goldCallback,endCallback)=>{
 	const surveyedSegments={}
 	readline.createInterface({
 		input: fs.createReadStream(filename)
 	}).on('line',(line)=>{
-		const [segmentName,surveyDate,surveyChangesetsString,goldId]=line.split(';')
+		const [segmentName,surveyDate,surveyChangesetsString,goldString]=line.split(';')
 		let surveyChangesets=[]
 		if (surveyChangesetsString.length>0) {
 			surveyChangesets=surveyChangesetsString.split(',').map(Number)
@@ -50,9 +50,15 @@ const readSurveys=(filename,segments,callback)=>{
 			]
 		}
 		const [,,,,surveys]=surveyedSegments[segmentName]
-		surveys.push([surveyDate,surveyChangesets])
+		const survey=[surveyDate,surveyChangesets]
+		if (goldString!==undefined) {
+			const goldId=Number(goldString)
+			if (goldId>0) goldCallback(goldId)
+			survey.push(goldId)
+		}
+		surveys.push(survey)
 	}).on('close',()=>{
-		callback(surveyedSegments)
+		endCallback(surveyedSegments)
 	})
 }
 
@@ -62,7 +68,11 @@ const writeHtml=(prefix,htmlName,title)=>{
 
 const writeData=(prefix)=>{
 	readSegments(`${prefix}.osm`,(segments)=>{
-		readSurveys(`${prefix}.csv`,segments,(surveyedSegments)=>{
+		readSurveys(`${prefix}.csv`,segments,(goldId)=>{
+			fs.mkdir('public_html/gold',{recursive:true},()=>{
+				fs.createReadStream(`gold/${goldId}.osm`).pipe(fs.createWriteStream(`public_html/gold/${goldId}.osm`))
+			})
+		},(surveyedSegments)=>{
 			const makeDeltaCompressor=()=>{
 				let a=0
 				return x=>{
