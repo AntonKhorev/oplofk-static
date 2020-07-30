@@ -70,7 +70,7 @@ const writeData=(prefix)=>{
 	readSegments(`${prefix}.osm`,(segments)=>{
 		readSurveys(`${prefix}.csv`,segments,(goldId)=>{
 			fs.mkdir('public_html/gold',{recursive:true},()=>{
-				fs.createReadStream(`gold/${goldId}.osm`).pipe(fs.createWriteStream(`public_html/gold/${goldId}.osm`))
+				fs.copyFile(`gold/${goldId}.osm`,`public_html/gold/${goldId}.osm`,()=>{})
 			})
 		},(surveyedSegments)=>{
 			const makeDeltaCompressor=()=>{
@@ -102,8 +102,8 @@ const writeDistrict=(prefix,htmlName,title)=>{
 
 module.exports=(pages)=>{
 	fs.mkdir('public_html',{recursive:true},()=>{
-		fs.createReadStream(`${__dirname}/map.js` ).pipe(fs.createWriteStream('public_html/map.js' ))
-		fs.createReadStream(`${__dirname}/map.css`).pipe(fs.createWriteStream('public_html/map.css'))
+		fs.copyFile(`${__dirname}/map.js` ,'public_html/map.js' ,()=>{})
+		fs.copyFile(`${__dirname}/map.css`,'public_html/map.css',()=>{})
 		for (let page of pages) {
 			writeDistrict(...page)
 		}
