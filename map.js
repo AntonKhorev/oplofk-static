@@ -22,7 +22,7 @@ function openRcLink(element) {
 }
 function getLink(text,josmLayerTitle,url,josmUrl) {
 	if (josmUrl===undefined) josmUrl=url
-	return "<a href="+url+">"+text+"</a><sup><a onclick='return openRcLink(this)' href='http://127.0.0.1:8111/import?new_layer=true&layer_name="+encodeURIComponent(josmLayerTitle)+"&url="+encodeURIComponent(josmUrl)+"'>RC</a></sup>"
+	return "<a href="+url+">"+text+"</a><sup><a onclick='return openRcLink(this)' href='http://127.0.0.1:8111/import?new_layer=true&upload_policy=false&layer_name="+encodeURIComponent(josmLayerTitle)+"&url="+encodeURIComponent(josmUrl)+"'>RC</a></sup>"
 }
 function getChangesetsCell(josmLayerTitle,changesetIds) {
 	if (changesetIds.length==0) return "нет"
